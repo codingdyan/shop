@@ -5,7 +5,7 @@ import { Navbar,Nav, Form, FormControl, Button, Container} from 'react-bootstrap
 const Header = () => {
     return (
         <header>
-            <Navbar bg="light" expand="md" collapseOnSelect>
+            <Navbar bg="light" varient="dark" expand="lg" collapseOnSelect>
                 <Container>
                     <LinkContainer to="/">
                         <Navbar.Brand>SHOP</Navbar.Brand>
@@ -23,7 +23,7 @@ const Header = () => {
                         </Nav>
                         <Form className="d-flex">
                             <FormControl type="text" placeholder="Search" className="form-control me-sm-2" />
-                            <Button variant="btn btn-secondary my-2 my-sm-0">Search</Button>
+                            <Button variant="btn btn-primary">Search</Button>
                         </Form>
                     </Navbar.Collapse>
 
