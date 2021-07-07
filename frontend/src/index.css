@@ -31,3 +31,7 @@ h3{
   padding-left: 8px;
   padding-right: 8px;
 }
+
+.mt-1 {
+  margin-top: 10px !important;
+}
