@@ -42,6 +42,19 @@ const Header = () => {
                             ): <LinkContainer to="/login">
                                 <Nav.Link ><i className="fa fa-user"></i>Login</Nav.Link>
                             </LinkContainer>}
+                            {userInfo && userInfo.isAdmin && (
+                            <NavDropdown title="Admin" id="adminmenu">
+                                <LinkContainer to="/admin/userlist">
+                                    <NavDropdown.Item>Users</NavDropdown.Item>
+                                </LinkContainer>
+                                <LinkContainer to="/admin/productlist">
+                                    <NavDropdown.Item>Products</NavDropdown.Item>
+                                </LinkContainer>
+                                <LinkContainer to="/admin/orderlist">
+                                    <NavDropdown.Item>Orders</NavDropdown.Item>
+                                </LinkContainer>
+                            </NavDropdown>
+                         )}
                         </Nav>
                         <Form className="d-flex">
                             <FormControl type="text" placeholder="Search" className="form-control me-sm-2" />

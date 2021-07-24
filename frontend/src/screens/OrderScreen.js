@@ -9,7 +9,7 @@ import Loader from '../components/Loader'
 import { getOrderDetails, payOrder } from '../actions/orderActions'
 import { ORDER_PAY_RESET } from '../constants/orderConstants'
 
-const OrderScreen = ({ match }) => {
+const OrderScreen = ({ match, history }) => {
     const orderId = match.params.id
 
     const [sdkReady, setSdkReady] = useState(false)
@@ -22,35 +22,42 @@ const OrderScreen = ({ match }) => {
     const orderPay = useSelector(state => state.orderPay)
     const { loading: loadingPay, success: successPay } = orderPay
 
+    const userLogin = useSelector(state => state.userLogin)
+    const { userInfo } = userLogin
+
 
     if(!loading) {
         order.itemsPrice = order.orderItems.reduce((acc, item) => acc + item.price * item.qty, 0).toFixed(2)
     }
         
     useEffect(() => {
+
         const addPayPalScript = async () => {
             const { data: clientId } = await axios.get('/api/config/paypal')
             const script = document.createElement('script')
             script.type = 'text/javascript'
-            script.src = `https://www.paypal.com/sdk/js?client-id=${clientId}&currency='ZAR'`
+            script.src = `https://www.paypal.com/sdk/js?client-id=${clientId}`
             script.async = true
             script.onload = () => {
                 setSdkReady(true)
             }
             document.body.appendChild(script)
         }
-
-        if(!order || successPay || order._id !== orderId) {
-            dispatch({ type: ORDER_PAY_RESET})
-            dispatch(getOrderDetails(orderId))
-        }else if(!order.isPaid){
-            if(!window.paypal){
-                addPayPalScript()
-            }else{
-                setSdkReady(true)
+        if(!userInfo){
+            history.push('/login')
+        }else{
+            if(!order || successPay || order._id !== orderId) {
+                dispatch({ type: ORDER_PAY_RESET})
+                dispatch(getOrderDetails(orderId))
+            }else if(!order.isPaid){
+                if(!window.paypal){
+                    addPayPalScript()
+                }else{
+                    setSdkReady(true)
+                }
             }
         }
-    }, [dispatch, order, orderId, successPay])
+    }, [dispatch, order, orderId, successPay, history, userInfo])
 
     const onSuccessPaymentHandler = (paymentResult) => {
         console.log(paymentResult)
